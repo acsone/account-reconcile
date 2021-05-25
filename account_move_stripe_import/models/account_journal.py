@@ -28,7 +28,8 @@ class AccountJournal(models.Model):
     @api.model
     def run_import_stripe_deposit(self):
         moves = self.env["account.move"]
-        for journal in self.search([('import_type', '=', 'stripe')]):
+        for journal in self.search([('import_type', '=', 'stripe'),
+                                    ('used_for_import', '=', True)]):
             moves |= journal.multi_move_import(None, None)
         return moves
 
